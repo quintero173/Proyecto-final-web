@@ -4,7 +4,7 @@ const objectConnection = {
     "host": "localhost",
     "port": "3306",
     "user": "root",
-    "password": "root",
+    "password": "quintero173",
     "database": "proyecto"
 }
 

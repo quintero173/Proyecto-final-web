@@ -26,15 +26,15 @@ routes.get('/Categoria/:id', obtenerCategoria);
 routes.get('/Personal/:id', obtenerPersonal);
 routes.get('/Tickets/:id', obtenerTickets);
 
-routes.get('/Categoria', crearCategoria);
-routes.get('/Personal', crearPersonal);
-routes.get('/Tickets', crearTickets);
+routes.post('/Categoria', crearCategoria);
+routes.post('/Personal', crearPersonal);
+routes.post('/Tickets', crearTickets);
 
-routes.get('/Personal/:id', editarPersonal);
-routes.get('/Tickets/:id', editarTickets);
+routes.put('/Personal/:id', editarPersonal);
+routes.put('/Tickets/:id', editarTickets);
 
-routes.get('/Categoria/:id', eliminarCategoria);
-routes.get('/Personal/:id', eliminarPersonal);
-routes.get('/Tickets/:id', eliminarTickets);
+routes.delete('/Categoria/:id', eliminarCategoria);
+routes.delete('/Personal/:id', eliminarPersonal);
+routes.delete('/Tickets/:id', eliminarTickets);
 
 module.exports = routes;
