@@ -46,3 +46,10 @@ insert into personal(nombre,apellidos,telefono,direccion)values("Benjamin","cama
 insert into tickets(nombre,descripcion,prioridad,idpersonal,idcategorias,estatus)values("inconformidad","deseo saber cómo funciona el sistema",1,1,1,"FIN");
 insert into tickets(nombre,descripcion,prioridad,idpersonal,idcategorias,estatus)values("Consulta","deseo saber cómo funciona la consulta",2,2,2,"ABT");
 insert into tickets(nombre,descripcion,prioridad,idpersonal,idcategorias,estatus)values("Catalogo incorrecto","error en el catalogo",3,3,3,"ESP");
+
+CREATE VIEW V_TicketsPC AS
+SELECT t.idTickets, t.Nombre, t.Descripcion, t.Prioridad, t.Estatus, 
+p.idPersonal, "NombrePersonal" = p.Nombre, p.Apellidos, c.idCategorias, "NombreCategorias" = c.Nombre
+FROM Tickets t
+INNER JOIN personal p ON p.idPersonal = t.idPersonal
+INNER JOIN categorias c ON c.idCategorias = t.idCategorias;

@@ -8,6 +8,7 @@ listaTickets,
 obtenerCategoria,
 obtenerPersonal,
 obtenerTickets,
+obtenerCategoriaTicket,
 crearCategoria,
 crearPersonal,
 crearTickets,
@@ -25,6 +26,7 @@ routes.get('/Tickets', listaTickets);
 routes.get('/Categoria/:id', obtenerCategoria);
 routes.get('/Personal/:id', obtenerPersonal);
 routes.get('/Tickets/:id', obtenerTickets);
+routes.get('/Tickets/:id', obtenerCategoriaTicket);
 
 routes.post('/Categoria', crearCategoria);
 routes.post('/Personal', crearPersonal);

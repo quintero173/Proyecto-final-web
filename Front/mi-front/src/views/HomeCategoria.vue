@@ -44,7 +44,7 @@ export default {
       console.log("Eliminar", item.item.idCategorias);
 
       this.$bvModal
-        .msgBoxConfirm("Esta opción no se puede deshacer.", {
+        .msgBoxConfirm("Esta opción se eliminará.", {
           title: "Eliminar categoria",
           size: "sm",
           buttonSize: "sm",
@@ -57,7 +57,7 @@ export default {
         .then((value) => {
           if (value) {
             this.eliminarCategoria({
-              idCategorias: item.item.idCategorias,
+              id: item.item.idCategorias,
               onComplete: (response) => {
                 this.$notify({
                   type: "success",

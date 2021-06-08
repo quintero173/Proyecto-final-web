@@ -4,6 +4,19 @@
     <b-navbar-brand tag="h1" class="mx-2" to="/">
         Inicio
     </b-navbar-brand>
+
+    <b-navbar-brand tag="h1" class="mx-2" to="/HomeCategoria">
+       Categorias
+    </b-navbar-brand>
+
+    <b-navbar-brand tag="h1" class="mx-2" to="/HomePersonal">
+       Personal
+    </b-navbar-brand>
+
+    <b-navbar-brand tag="h1" class="mx-2" to="/HomeTickets">
+       Tickets
+    </b-navbar-brand>
+
     </b-navbar>
     <router-view class="container mt-3" />
     <notifications position="bottom right" />

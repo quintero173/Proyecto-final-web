@@ -56,7 +56,7 @@ export default {
                             title: response.data.mensaje,
                         });
                         this.$router.push({
-                            name: 'Home'
+                            name: 'HomeCategoria'
                         })
                     },
                     onError: (error) => {

@@ -101,6 +101,22 @@ function obtenerTickets(req, res) {
     }
 
 }
+function obtenerCategoriaTicket(req, res) {
+	if (connection) {
+		const id = req.params.id;
+		let sql = `SELECT * FROM proyecto.vTicketPC WHERE idCategorias = ? ORDER BY idtickets`;
+		connection.query(sql, [id], (err, Tickets) => {
+			if (err) {
+				console.log(err);
+			} else {
+				var mensaje1 = "";
+				if (tickets === undefined || tickets.length == 0)
+					mensaje1 = "la categoría no se ha encontrado";
+				res.json({ data: Tickets, mensaje: mensaje1 });
+			}
+		});
+	}
+}
 
 
 function crearCategoria(req, res){
@@ -112,7 +128,7 @@ function crearCategoria(req, res){
             return res.status(400).send({error: true, mensaje: "El nombre es obligatorio"});
         }
 
-        if(!categoria.nombre.length <= 50){
+        if(categoria.nombre.length > 50 && categoria.nombre){
             return res.status(400).send({error: true, mensaje: "El nombre debe de ser maximo 50 caracteres"});
         }
 
@@ -202,7 +218,7 @@ function editarPersonal(req, res) {
         const { id } = req.params;
         const personal = req.body;
 
-        let sql = "UPDATE proyecto.personal set ? WHERE id = ?";
+        let sql = "UPDATE proyecto.personal set ? WHERE idPersonal = ?";
 
         connection.query(sql, [personal, id], (err, data) => {
             if(err) {
@@ -226,7 +242,7 @@ function editarTickets(req, res) {
         const { id } = req.params;
         const tickets = req.body;
 
-        let sql = "UPDATE proyecto.tickets set ? WHERE id = ?";
+        let sql = "UPDATE proyecto.tickets set ? WHERE idTickets = ?";
 
         connection.query(sql, [tickets, id], (err, data) => {
             if(err) {
@@ -248,7 +264,7 @@ function editarTickets(req, res) {
 function eliminarCategoria(req, res) {
     if(connection) {
         const { id } = req.params;
-        let sql = "DELETE FROM proyecto.categorias WHERE id = ?";
+        let sql = "DELETE FROM proyecto.categorias WHERE idCategorias = ?";
         connection.query(sql, [id], (err, data) => {
             if(err) {
                 res.json(err);
@@ -269,7 +285,7 @@ function eliminarCategoria(req, res) {
 function eliminarPersonal(req, res) {
     if(connection) {
         const { id } = req.params;
-        let sql = "DELETE FROM proyecto.personal WHERE id = ?";
+        let sql = "DELETE FROM proyecto.personal WHERE idPersonal = ?";
         connection.query(sql, [id], (err, data) => {
             if(err) {
                 res.json(err);
@@ -290,7 +306,7 @@ function eliminarPersonal(req, res) {
 function eliminarTickets(req, res) {
     if(connection) {
         const { id } = req.params;
-        let sql = "DELETE FROM proyecto.tickets WHERE id = ?";
+        let sql = "DELETE FROM proyecto.tickets WHERE idTickets = ?";
         connection.query(sql, [id], (err, data) => {
             if(err) {
                 res.json(err);
@@ -315,6 +331,7 @@ module.exports = {
     obtenerCategoria,
     obtenerPersonal,
     obtenerTickets,
+    obtenerCategoriaTicket,
     crearCategoria,
     crearPersonal,
     crearTickets,

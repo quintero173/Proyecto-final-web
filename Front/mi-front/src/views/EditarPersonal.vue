@@ -2,6 +2,14 @@
   <div>
       <h1>Editar</h1>
       <b-form @submit.prevent="guardarPersonal()">
+      
+      <Input
+        v-model="personal.idPersonal"
+        id="id"
+        titulo="Clave"
+        :disabled ="true"
+        class="mb-2"
+      />
       <Input
         v-model="personal.nombre"
         id="nombre"
@@ -16,16 +24,23 @@
         v-model="personal.apellidos"
         id="apellidos"
         titulo="Apellidos"
-        :maxlength="10"
+        :maxlength="80"
         :error="erroresValidacion && !validacionApellidos"
         mensajeError="Es necesario ingresar el apellido"
         placeholder="Ingrese el apellido"
         class="mb-2"
       />
       <Input
-        v-model="persona.telefono"
+        v-model="personal.telefono"
         id="telefono"
-        titulo="telefono"
+        titulo="Telefono"
+        :maxlength="10"
+        placeholder="Ingrese el teléfono"
+      />
+        <Input
+        v-model="personal.direccion"
+        id="direccion"
+        titulo="Direccion"
         :maxlength="150"
         placeholder="Ingrese la dirección"
       />
@@ -40,7 +55,7 @@ import { mapActions, mapState } from 'vuex'
 import Input from "../components/Input";
 
 export default {
-name: 'Editar',
+name: 'EditarPersonal',
 components: {
     Input,
   },
@@ -86,7 +101,7 @@ methods: {
               title: response.data.mensaje,
             });
             this.$router.push({
-                name: 'Home'
+                name: 'HomePersonal'
             })
             
           },
@@ -107,7 +122,7 @@ created() {
     this.obtenerPersonal({
         id: this.$route.params.id,
         onComplete: (response) => {
-            Vue.set(this, 'persona', response.data.data)
+            Vue.set(this, 'personal', response.data.data)
         }
     })
 }

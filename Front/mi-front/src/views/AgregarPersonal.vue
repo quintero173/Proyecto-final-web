@@ -53,7 +53,7 @@ export default {
     },
     data() {
         return {
-            Personal: {
+            personal: {
                 nombre: "",
                 apellidos:"",
                 telefono:"",
@@ -65,26 +65,26 @@ export default {
     computed: {
         validacionNombre() {
             return (
-                 this.Personal.nombre !==undefined && 
-                 this.Personal.nombre.trim() !== ""
+                 this.personal.nombre !==undefined && 
+                 this.personal.nombre.trim() !== ""
             )
         },
         validacionApellidos() {
             return (
-                 this.Personal.apellidos !==undefined && 
-                 this.Personal.apellidos.trim() !== ""
+                 this.personal.apellidos !==undefined && 
+                 this.personal.apellidos.trim() !== ""
             )
         },
         validacionTelefono() {
             return (
-                 this.Personal.telefono !==undefined && 
-                 this.Personal.telefono.trim() !== ""
+                 this.personal.telefono !==undefined && 
+                 this.personal.telefono.trim() !== ""
             )
         },
           validacionDireccion() {
             return (
-                 this.Personal.direccion !==undefined && 
-                 this.Personal.direccion.trim() !== ""
+                 this.personal.direccion !==undefined && 
+                 this.personal.direccion.trim() !== ""
             )
         },
     },
@@ -95,7 +95,7 @@ export default {
                 this.erroresValidacion = false
 
                 this.crearPersonal({
-                    params: this.Personal,
+                    params: this.personal,
                     onComplete: (response) => {
                         console.log(response.data);
                         this.$notify({
@@ -103,7 +103,7 @@ export default {
                             title: response.data.mensaje,
                         });
                         this.$router.push({
-                            name: 'Home'
+                            name: 'HomePersonal'
                         })
                     },
                     onError: (error) => {

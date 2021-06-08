@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h1>Personal</h1>
-    <b-button variant="primary" to="/agregarPersonal">Agregar</b-button>
+    <h1>Tickets</h1>
+    <b-button variant="primary" to="/agregarTickets">Agregar</b-button>
 
-    <Table :items="personal" :fields="campos">
+    <Table :items="tickets" :fields="campos">
       <template slot="actions" slot-scope="{ item }">
         <b-button class="me-1" @click="onEditar(item)">Editar</b-button>
         <b-button @click="onEliminar(item)">Eliminar</b-button>
+        <b-button variant="primary" class="mb-6 mx-2" @click="onEditarEstatus(item)">Cambiar estatus</b-button>
       </template>
     </Table>
   </div>
@@ -17,32 +18,44 @@ import Table from "../components/Table";
 import { mapState, mapActions } from "vuex";
 
 export default {
-  name: "HomePersonal",
+  name: "HomeTickets",
   components: {
     Table
   },
   data() {
     return {
       campos: [
-        {key: "idPersonal", label: "ID" },
+        {key: "idTickets", label: "ID" },
         {key: 'Nombre',
          formatter: value => {
           return value || "sin datos"
         }},
         {
-          key: "Apellidos",
+          key: "Descripcion",
           formatter: (value) => {
             return value || "Sin datos";
           },
         },
         {
-          key: "Telefono",
+          key: "Prioridad",
           formatter: (value) => {
             return value || "sin datos";
           },
         },
         {
-          key: "Direccion",
+          key: "idPersonal",
+          formatter: (value) => {
+            return value || "sin datos";
+          },
+        },
+        {
+          key: "idCategorias",
+          formatter: (value) => {
+            return value || "sin datos";
+          },
+        },
+        {
+          key: "Estatus",
           formatter: (value) => {
             return value || "sin datos";
           },
@@ -52,25 +65,33 @@ export default {
     };
   },
   computed: {
-    ...mapState(["personal"]),
+    ...mapState(["tickets"]),
   },
   methods: {
-    ...mapActions(["setPersonal", "eliminarPersonal"]),
+    ...mapActions(["setTickets", "eliminarTickets"]),
     onEditar(item) {
-      console.log("Editar", item.item.idPersonal);
+      console.log("Editar", item.item.idTickets);
       this.$router.push({
-        name: "EditarPersonal",
+        name: "EditarTicket",
         params: {
-          id: item.item.idPersonal,
+          id: item.item.idTickets,
+        },
+      });
+    },
+    onEditarEstatus(item) {
+      this.$router.push({
+        name: "EditarEstatus",
+        params: {
+          id: item.item.idTickets,
         },
       });
     },
     onEliminar(item) {
-      console.log("Eliminar", item.item.idPersonal);
+      console.log("Eliminar", item.item.idTickets);
 
       this.$bvModal
         .msgBoxConfirm("Esta opción se eliminará.", {
-          title: "Eliminar Persona",
+          title: "Eliminar ticket",
           size: "sm",
           buttonSize: "sm",
           okVariant: "danger",
@@ -81,14 +102,14 @@ export default {
         })
         .then((value) => {
           if (value) {
-            this.eliminarPersonal({
-              id: item.item.idPersonal,
+            this.eliminarTickets({
+              id: item.item.idTickets,
               onComplete: (response) => {
                 this.$notify({
                   type: "success",
                   title: response.data.mensaje,
                 });
-                setTimeout(() => this.setPersonal(), 1000);
+                setTimeout(() => this.setTickets(), 1000);
               },
             });
           }
@@ -99,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    this.setPersonal();
+    this.setTickets();
   },
 };
 </script>
