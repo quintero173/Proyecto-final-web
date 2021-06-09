@@ -1,129 +1,115 @@
 <template>
   <div>
-      <h1>Agregar personal</h1>
-      <b-form @submit.prevent="guardarPersonal()">
-          <Input
-            v-model="personal.nombre"
-            id="nombre"
-            titulo="Nombre"
-            placeholder="Ingrese el dato"
-            :maxlength="50"
-            :error="erroresValidacion && !validacionNombre"
-            mensajeError="Debes ingresar el dato requerido"
-            class="mb-2"
-          />
-           <Input
-            v-model="personal.apellidos"
-            id="apellidos"
-            titulo="Apellidos"
-            placeholder="Ingrese el dato"
-            :maxlength="80"
-            :error="erroresValidacion && !validacionApellidos"
-            mensajeError="Debes ingresar el dato requerido"
-            class="mb-2"
-          />
-            <Input
-            v-model="personal.telefono"
-            id="telefono"
-            titulo="Telefono"
-            placeholder="Ingrese el dato"
-            :maxlength="10"
-            class="mb-2"
-          />
-            <Input
-            v-model="personal.direccion"
-            id="direccion"
-            titulo="Direccion"
-            placeholder="Ingrese el dato"
-            :maxlength="150"
-            class="mb-2"
-          />
-        <b-button type="submit" class="mt-2" variant="primary"> Guardar </b-button>
-      </b-form>
+    <h1>Agregar Personal</h1>
+    <b-form @submit.prevent="guardarPersonal()">
+      <Input
+        v-model="persona.nombre"
+        id="nombre"
+        titulo="Nombre"
+        placeholder="Ingrese el nombre"
+        :maxlength="50"
+        :error="erroresValidacion && !validacionNombre"
+        mensajeError="Es necesario ingresar el nombre"
+        class="mb-2"
+      />
+      <Input
+        v-model="persona.apellidos"
+        id="apellidos"
+        titulo="Apellidos"
+        :maxlength="80"
+        :error="erroresValidacion && !validacionApellidos"
+        mensajeError="Es necesario ingresar el apellido"
+        placeholder="Ingrese el apellido"
+        class="mb-2"
+      />
+      <Input
+        v-model="persona.telefono"
+        id="telefono"
+        titulo="Telefono"
+        :maxlength="10"
+        placeholder="Ingrese el telefono"
+        class="mb-2"
+      />
+      <Input
+        v-model="persona.direccion"
+        id="direccion"
+        titulo="Dirección"
+        :maxlength="150"
+        :error="erroresValidacion && !validacionDireccion"
+        placeholder="Ingrese la dirección"
+      />
+      <b-button type="submit" class="mt-2" variant="primary">Guardar</b-button>
+    </b-form>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import Input from '../components/Input'
+import { mapActions } from "vuex";
+import Input from "../components/Input";
+
 export default {
-    name: 'AgregarPersonal',
-    components: {
-        Input
+  name: "AgregarPersonal",
+  components: {
+    Input,
+  },
+  data() {
+    return {
+      persona: {
+        nombre: "",
+        apellidos:"",
+        telefono: "",
+        direccion: "",
+      },
+      erroresValidacion: false,
+    };
+  },
+  computed: {
+    validacionNombre() {
+      return (
+        this.persona.nombre !== undefined &&
+        this.persona.nombre.trim() !== ""
+      );
     },
-    data() {
-        return {
-            personal: {
-                nombre: "",
-                apellidos:"",
-                telefono:"",
-                direccion:""
-            },
-            erroresValidacion: false
-        };
+    validacionApellidos() {
+      return (
+        this.persona.apellidos !== undefined && 
+        this.persona.apellidos.trim() !== ""
+      );
     },
-    computed: {
-        validacionNombre() {
-            return (
-                 this.personal.nombre !==undefined && 
-                 this.personal.nombre.trim() !== ""
-            )
-        },
-        validacionApellidos() {
-            return (
-                 this.personal.apellidos !==undefined && 
-                 this.personal.apellidos.trim() !== ""
-            )
-        },
-        validacionTelefono() {
-            return (
-                 this.personal.telefono !==undefined && 
-                 this.personal.telefono.trim() !== ""
-            )
-        },
-          validacionDireccion() {
-            return (
-                 this.personal.direccion !==undefined && 
-                 this.personal.direccion.trim() !== ""
-            )
-        },
+  },
+  methods: {
+    ...mapActions(["crearPersonal"]),
+    guardarPersonal() {
+      if (this.validacionNombre && this.validacionApellidos) {
+        this.erroresValidacion = false;
+
+        //Guardar
+        this.crearPersonal({
+          params: this.persona,
+          onComplete: (response) => {
+            console.log(response.data);
+            this.$notify({
+              type: 'success', 
+              title: response.data.mensaje,
+            });
+            this.$router.push({
+                name: 'HomePersonal'
+            })
+          },
+          onError: (error) => {
+            console.log(error.response.data.mensaje);
+            this.$notify({
+              type: 'error', 
+              title: error.response.data.mensaje,
+            });
+          },
+        });
+      } else {
+        this.erroresValidacion = true;
+      }
     },
-    methods: {
-        ...mapActions(['crearPersonal']),
-        guardarPersonal() {
-            if(this.validacionNombre && this.validacionApellidos) {
-                this.erroresValidacion = false
-
-                this.crearPersonal({
-                    params: this.personal,
-                    onComplete: (response) => {
-                        console.log(response.data);
-                        this.$notify({
-                            type: 'success',
-                            title: response.data.mensaje,
-                        });
-                        this.$router.push({
-                            name: 'HomePersonal'
-                        })
-                    },
-                    onError: (error) => {
-                        console.log(error.response.data.mensaje);
-                        this.$notify({
-                            type: 'error',
-                            //  title: response.data.mensaje,
-                        });
-                    }
-                });
-
-            } else {
-                this.erroresValidacion = true
-            }
-        }
-    }
-
+  },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

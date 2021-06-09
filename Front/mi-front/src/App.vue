@@ -2,9 +2,8 @@
   <div id="app">
     <b-navbar type="dark" variant="dark" toggleable>
     <b-navbar-brand tag="h1" class="mx-2" to="/">
-        Inicio
+       Inicio
     </b-navbar-brand>
-
     <b-navbar-brand tag="h1" class="mx-2" to="/HomeCategoria">
        Categorias
     </b-navbar-brand>
@@ -13,12 +12,12 @@
        Personal
     </b-navbar-brand>
 
-    <b-navbar-brand tag="h1" class="mx-2" to="/HomeTickets">
+    <b-navbar-brand tag="h1" class="mx-2" to="/HomeTicket">
        Tickets
     </b-navbar-brand>
-
-    </b-navbar>
-    <router-view class="container mt-3" />
+    
+  </b-navbar>
+    <router-view class="container  mt-3" />
     <notifications position="bottom right" />
   </div>
 </template>
@@ -30,4 +29,5 @@
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
 }
+
 </style>

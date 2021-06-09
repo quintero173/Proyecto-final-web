@@ -1,17 +1,17 @@
 <template>
   <div>
-      <label :for="id"> {{ titulo }} </label>
-      <input
+    <label :for="id">{{ titulo }}</label>
+    <input 
         :id="id"
         class="form-control"
         :value="value"
         :type="tipo"
-        :maxlength="maxlength" 
+        :maxlength="maxlength"
         :disabled="disabled"
         :placeholder="placeholder"
         @input="$emit('input', $event.target.value)"
-      />
-      <span v-if="error" class="text-danger"> {{ mensajeError }} </span>
+    />
+    <span v-if="error" class="text-danger">{{ mensajeError }}</span>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default {
         },
         maxlength: {
             type: Number,
-            default: 77
+            default: 100
         },
         disabled: {
             type: Boolean,
@@ -39,7 +39,7 @@ export default {
         },
         placeholder: {
             type: String,
-            default: "Favor de ingresar la información"
+            default: "Ingresa la información"
         },
         mensajeError: {
             type: String,
@@ -50,6 +50,7 @@ export default {
             default: false
         }
     }
+
 }
 </script>
 

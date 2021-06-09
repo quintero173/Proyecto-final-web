@@ -26,7 +26,7 @@ routes.get('/Tickets', listaTickets);
 routes.get('/Categoria/:id', obtenerCategoria);
 routes.get('/Personal/:id', obtenerPersonal);
 routes.get('/Tickets/:id', obtenerTickets);
-routes.get('/Tickets/:id', obtenerCategoriaTicket);
+routes.get('/CategoriaTicket/:id', obtenerCategoriaTicket);
 
 routes.post('/Categoria', crearCategoria);
 routes.post('/Personal', crearPersonal);

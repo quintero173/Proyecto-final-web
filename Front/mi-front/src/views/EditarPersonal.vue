@@ -1,18 +1,17 @@
 <template>
   <div>
-      <h1>Editar</h1>
+      <h1>Editar Personal</h1>
       <b-form @submit.prevent="guardarPersonal()">
-      
       <Input
-        v-model="personal.idPersonal"
-        id="id"
+        v-model="persona.idPersonal"
+        id="idPersonal"
         titulo="Clave"
         :disabled ="true"
         class="mb-2"
       />
       <Input
-        v-model="personal.nombre"
-        id="nombre"
+        v-model="persona.Nombre"
+        id="Nombre"
         titulo="Nombre"
         placeholder="Ingrese el nombre"
         :maxlength="50"
@@ -21,8 +20,8 @@
         class="mb-2"
       />
       <Input
-        v-model="personal.apellidos"
-        id="apellidos"
+        v-model="persona.Apellidos"
+        id="Apellidos"
         titulo="Apellidos"
         :maxlength="80"
         :error="erroresValidacion && !validacionApellidos"
@@ -31,16 +30,17 @@
         class="mb-2"
       />
       <Input
-        v-model="personal.telefono"
-        id="telefono"
-        titulo="Telefono"
+        v-model="persona.Telefono"
+        id="Telefono"
+        titulo="Teléfono"
         :maxlength="10"
-        placeholder="Ingrese el teléfono"
+        placeholder="Ingrese el telefono"
+        class="mb-2"
       />
-        <Input
-        v-model="personal.direccion"
-        id="direccion"
-        titulo="Direccion"
+      <Input
+        v-model="persona.Direccion"
+        id="Direccion"
+        titulo="Dirección"
         :maxlength="150"
         placeholder="Ingrese la dirección"
       />
@@ -51,7 +51,7 @@
 
 <script>
 import Vue from 'vue'
-import { mapActions, mapState } from 'vuex'
+import { mapActions} from 'vuex'
 import Input from "../components/Input";
 
 export default {
@@ -61,11 +61,11 @@ components: {
   },
   data() {
     return {
-      personal: {
-        nombre: "",
-        apellidos: "",
-        telefono: "",
-        direccion: ""
+      persona: {
+        Nombre: "",
+        Apellidos: "",
+        Telefono: "",
+        Direccion: "",
       },
       erroresValidacion: false,
     };
@@ -73,26 +73,28 @@ components: {
 computed: {
     validacionNombre() {
       return (
-        this.personal.nombre !== undefined && this.personal.nombre.trim() !== ""
+        this.persona.Nombre !== undefined &&
+        this.persona.Nombre.trim() !== ""
       );
     },
     validacionApellidos() {
       return (
-        this.personal.apellidos !== undefined &&
-        this.personal.apellidos.trim() !== ""
+        this.persona.Apellidos !== undefined && 
+        this.persona.Apellidos.trim() !== ""
       );
-    }
+    },
 },
 methods: {
     ...mapActions(['obtenerPersonal', 'editarPersonal']),
     guardarPersonal() {
-      if (this.validacionNombre && this.validacionApellidos) {
-        this.erroresValidacion = false;
+      if (this.validacionNombre &&
+         this.validacionApellidos) {
+          this.erroresValidacion = false;
 
         //Guardar
          this.editarPersonal({
           id: this.$route.params.id,
-          params: this.personal,
+          params: this.persona,
           onComplete: (response) => {
            
            console.log(response.data);
@@ -122,7 +124,7 @@ created() {
     this.obtenerPersonal({
         id: this.$route.params.id,
         onComplete: (response) => {
-            Vue.set(this, 'personal', response.data.data)
+            Vue.set(this, 'persona', response.data.data)
         }
     })
 }

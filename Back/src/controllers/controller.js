@@ -104,7 +104,7 @@ function obtenerTickets(req, res) {
 function obtenerCategoriaTicket(req, res) {
 	if (connection) {
 		const id = req.params.id;
-		let sql = `SELECT * FROM proyecto.vTicketPC WHERE idCategorias = ? ORDER BY idtickets`;
+		let sql = `SELECT * FROM proyecto.v_TicketPC WHERE idCategorias = ? ORDER BY idtickets`;
 		connection.query(sql, [id], (err, Tickets) => {
 			if (err) {
 				console.log(err);
@@ -188,11 +188,11 @@ function crearTickets(req, res){
             return res.status(400).send({error: true, mensaje: "La prioridad es obligatorio"});
         }
 
-        if(!tickets.idpersonal){
+        if(!tickets.idPersonal){
             return res.status(400).send({error: true, mensaje: "El Personal es obligatorio"});
         }
 
-        if(!tickets.idcategorias){
+        if(!tickets.idCategorias){
             return res.status(400).send({error: true, mensaje: "La Categoria es obligatoria"});
         }
 

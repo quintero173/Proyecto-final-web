@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1>Personal</h1>
-    <b-button variant="primary" to="/agregarPersonal">Agregar</b-button>
+    <b-button variant="primary" to="/agregarPersonal">Agregar Personal</b-button>
 
-    <Table :items="personal" :fields="campos">
+    <Table :items="personal" :fields="campos" :busy="loading">
       <template slot="actions" slot-scope="{ item }">
         <b-button class="me-1" @click="onEditar(item)">Editar</b-button>
         <b-button @click="onEliminar(item)">Eliminar</b-button>
@@ -19,11 +19,11 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "HomePersonal",
   components: {
-    Table
+    Table,
   },
   data() {
     return {
-      campos: [
+        campos: [
         {key: "idPersonal", label: "ID" },
         {key: 'Nombre',
          formatter: value => {
@@ -49,10 +49,11 @@ export default {
         },
         { key: "actions", label: "Acciones" },
       ],
+
     };
   },
   computed: {
-    ...mapState(["personal"]),
+    ...mapState(["personal", "loading"]),
   },
   methods: {
     ...mapActions(["setPersonal", "eliminarPersonal"]),
@@ -69,8 +70,8 @@ export default {
       console.log("Eliminar", item.item.idPersonal);
 
       this.$bvModal
-        .msgBoxConfirm("Esta opción se eliminará.", {
-          title: "Eliminar Persona",
+        .msgBoxConfirm("Esta opción se va a eliminar.", {
+          title: "Eliminar Personal",
           size: "sm",
           buttonSize: "sm",
           okVariant: "danger",

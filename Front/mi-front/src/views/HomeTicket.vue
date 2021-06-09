@@ -1,9 +1,9 @@
 <template>
   <div>
     <h1>Tickets</h1>
-    <b-button variant="primary" to="/agregarTickets">Agregar</b-button>
+    <b-button variant="primary" to="/agregarTicket">Agregar ticket</b-button>
 
-    <Table :items="tickets" :fields="campos">
+    <Table :items="tickets" :fields="campos" :busy="loading">
       <template slot="actions" slot-scope="{ item }">
         <b-button class="me-1" @click="onEditar(item)">Editar</b-button>
         <b-button @click="onEliminar(item)">Eliminar</b-button>
@@ -18,7 +18,7 @@ import Table from "../components/Table";
 import { mapState, mapActions } from "vuex";
 
 export default {
-  name: "HomeTickets",
+  name: "HomeTicket",
   components: {
     Table
   },
@@ -43,13 +43,13 @@ export default {
           },
         },
         {
-          key: "idPersonal",
+          key: "idPersonal", label: "Personal",
           formatter: (value) => {
             return value || "sin datos";
           },
         },
         {
-          key: "idCategorias",
+          key: "idCategorias", label: "Categorias",
           formatter: (value) => {
             return value || "sin datos";
           },
@@ -65,10 +65,10 @@ export default {
     };
   },
   computed: {
-    ...mapState(["tickets"]),
+    ...mapState(["tickets","loading"]),
   },
   methods: {
-    ...mapActions(["setTickets", "eliminarTickets"]),
+    ...mapActions(["setTicket", "eliminarTicket"]),
     onEditar(item) {
       console.log("Editar", item.item.idTickets);
       this.$router.push({
@@ -102,14 +102,14 @@ export default {
         })
         .then((value) => {
           if (value) {
-            this.eliminarTickets({
+            this.eliminarTicket({
               id: item.item.idTickets,
               onComplete: (response) => {
                 this.$notify({
                   type: "success",
                   title: response.data.mensaje,
                 });
-                setTimeout(() => this.setTickets(), 1000);
+                setTimeout(() => this.setTicket(), 1000);
               },
             });
           }
@@ -120,7 +120,7 @@ export default {
     },
   },
   mounted() {
-    this.setTickets();
+    this.setTicket();
   },
 };
 </script>

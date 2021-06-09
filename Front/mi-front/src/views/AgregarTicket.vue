@@ -1,10 +1,10 @@
 <template>
   <div>
-    <h1>Agregar un Ticket</h1>
-    <b-form @submit.prevent=guardarTickets()>
-      <div class="inputs">
+    <h1>Agregar Ticket</h1>
+    <b-form @submit.prevent=guardarTicket()>
+      <div>
         <Input
-          v-model="tickets.nombre"
+          v-model="ticket.nombre"
           id="nombre"
           titulo="Nombre"
           placeholder="Ingrese el nombre del ticket"
@@ -15,47 +15,51 @@
           
         />
         <Input
-          v-model="tickets.descripcion"
+          v-model="ticket.descripcion"
           id="descripcion"
           titulo="Descripción"
           placeholder="Ingrese la descripción del ticket"
           :maxlength="100"
           class="mt-2 col-10"
-        />
-        <Select
-          :items="PrioridadOpciones"
-          v-model="tickets.prioridad"
-          id="prioridad"
-          iditem="id"
-          name="nombrePrioridad"
-          titulo="Prioridad"
-          :error="erroresValidacion && !validacionPrioridad"
-          mensajeError="Es necesario ingresar la prioridad"
-          class="mt-2 col-10"
-        />
-          <Select
-            :items="personal"
-            v-model="tickets.idPersonal"
-            id="idPersonal"
-            iditem="idPersonal"
-            name="nombre"
-            lastname="apellidos"
-            titulo="Personal"
-            :error="erroresValidacion && !validacionPersonal"
-            mensajeError="Es necesario ingresar el personal"
-            class="mt-2 col-10"
-          />
-          <Select
-            :items="categorias"
-            v-model="tickets.idCategorias"
-            id="idCategorias"
-            iditem="idCategorias"
-            name="nombre"
-            titulo="Categoría"
-            :error="erroresValidacion && !validacionCategoria"
-            mensajeError="Es necesario ingresar la categoria"
-            class="mt-2 col-10"
-          />
+        />  
+        <h6>Prioridad</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.prioridad"
+        >
+        <option
+        v-for="item in PrioridadOpciones"
+        :value="item.id"
+        :key="item.id"
+        >
+        {{item.nombrePrioridad}}
+        </option>
+        </select>
+
+        <h6>Personal</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.idPersonal"
+        >
+        <option
+          v-for="pers in personal"
+          :value="pers.idPersonal"
+          :key="pers.idPersonal"
+        >
+        {{pers.Nombre}}
+        </option>
+        </select>
+
+        <h6>Categorias</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.idCategorias"
+        >
+        <option
+          v-for="cat in categorias"
+          :value="cat.idCategorias"
+          :key="cat.idCategorias"
+        >
+        {{cat.Nombre}}
+        </option>
+        </select>
         </div>
     
       <b-button type="submit" variant="dark">Guardar</b-button>
@@ -65,22 +69,21 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Select from '../components/Select';
 import Input from '../components/Input';
 export default {
-  name: "AgregarTickets",
+  name: "AgregarTicket",
   components: {
-    Select,
     Input
   },
   data() {
     return {
-      tickets: {
+      ticket: {
         nombre: "",
         descripcion: "",
         prioridad: "",
         idPersonal: "",
         idCategorias: "",
+        estatus:"ABT"
       },
       selected: null,
       PrioridadOpciones: [
@@ -95,29 +98,29 @@ export default {
     ...mapState(["personal", "categorias"]),
     validacionNombre() {
       return (
-        this.tickets.nombre !== undefined &&
-        this.tickets.nombre.trim() !== ""
+        this.ticket.nombre !== undefined &&
+        this.ticket.nombre.trim() !== ""
       );
     },
     validacionPrioridad() {
       return (
-        this.tickets.prioridad !== ""
+        this.ticket.prioridad !== ""
       );
     },
     validacionPersonal() {
       return (
-        this.tickets.idPersonal !== ""
+        this.ticket.idPersonal !== ""
       );
     },
     validacionCategoria() {
       return (
-        this.tickets.idCategorias !== ""
+        this.ticket.idCategorias !== ""
       );
     },
   },
   methods: {
-    ...mapActions(["crearTickets", "setPersonal", "setCategorias"]),
-    guardarTickets() {
+    ...mapActions(["crearTicket", "setPersonal", "setCategoria"]),
+    guardarTicket() {
       if (
         !(this.validacionNombre && this.validacionPrioridad &&
           this.validacionPersonal && this.validacionCategoria
@@ -126,15 +129,15 @@ export default {
         this.erroresValidacion = true;
       } else {
         this.erroresValidacion = false;
-        this.crearTickets({
-          params: this.tickets,
+        this.crearTicket({
+          params: this.ticket,
           onComplete: (response) => {
             this.$notify({
               type: "success",
               title: response.data.mensaje,
             });
             this.$router.push({
-              name: "HomeTickets",
+              name: "HomeTicket",
             });
           },
           onError: (err) => {
@@ -149,7 +152,7 @@ export default {
   },
   created() {
     this.setPersonal(),
-    this.setCategorias();
+    this.setCategoria();
   },
 };
 </script>

@@ -6,105 +6,95 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    categorias: [],
-    categoria:{},
-
     personal: [],
-    personal1:{},
+    persona: {},
+
+    categorias: [],
+    categoria: {},
 
     tickets: [],
-    tickets1: {}
+    ticket: {},
+    
+    loading: false
   },
   mutations: {
+    //CATEGORIAS
     SET_CATEGORIAS(state, categorias) {
       state.categorias = categorias;
     },
     SET_CATEGORIA(state, categoria) {
       state.categoria = categoria;
     },
-
-    SET_PERSONAL(state, personal) {
+    //PERSONAL
+    SET_PERSONAl(state, personal) {
       state.personal = personal;
     },
-    SET_PERSONAL1(state, personal1) {
-      state.personal1 = personal1;
+    SET_PERSONA(state, persona) {
+      state.persona = persona;
     },
-
-    SET_TICKETS (state, tickets) {
+    //TICKETS
+    SET_TICKETS(state, tickets) {
       state.tickets = tickets;
     },
-    SET_TICKETS1 (state, tickets1) {
-      state.tickets1 = tickets1;
-    }
-
+    SET_TICKET(state, ticket) {
+      state.ticket = ticket;
+    },
+    SET_LOADING(state, payload) {
+      state.loading = payload;
+    },
   },
   actions: {
-  /*todos los SET*/ 
-    setCategorias({commit}){
+    //CATEGORIAS
+    setCategoria({commit}){
+      commit("SET_LOADING", true);
       axios.get('http://localhost:3000/Categoria')
       .then( response => {
         commit('SET_CATEGORIAS', response.data);
       })
+      .finally(() => commit('SET_LOADING', false))
     },
-    setPersonal({commit}){
-      axios.get('http://localhost:3000/Personal')
-      .then( response => {
-        commit('SET_PERSONAL', response.data);
-      })
-    },
-    setTickets({commit}){
-      axios.get('http://localhost:3000/Tickets')
-      .then( response => {
-        commit('SET_TICKETS', response.data);
-      })
-    },
-
-  /*todos los CREAR*/ 
     crearCategoria({commit}, {params, onComplete, onError}) {
       axios.post('http://localhost:3000/Categoria', params)
       .then(onComplete)
       .catch(onError)
+    },
+    obtenerCategoria({commit}, {id, onComplete, onError}) {
+      axios.get(`http://localhost:3000/Categoria/${id}`)
+      .then( response => {
+        commit('SET_CATEGORIA', response.data.data);
+        onComplete(response)
+      })
+      .catch(onError)
+    },
+    eliminarCategoria({commit}, {id, onComplete, onError}){
+      axios.delete(`http://localhost:3000/Categoria/${id}`)
+      .then(onComplete)
+      .catch(onError)
+    },
+    //PERSONAL
+    setPersonal({commit}){
+      commit("SET_LOADING", true);
+      axios.get('http://localhost:3000/Personal')
+      .then( response => {
+        commit('SET_PERSONAl', response.data);
+      })
+      .finally(() => commit('SET_LOADING', false))
     },
     crearPersonal({commit}, {params, onComplete, onError}) {
       axios.post('http://localhost:3000/Personal', params)
       .then(onComplete)
       .catch(onError)
     },
-    crearTickets({commit}, {params, onComplete, onError}) {
-      axios.post('http://localhost:3000/Tickets', params)
-      .then(onComplete)
-      .catch(onError)
-    },
-
-    /*todos los OBTENER*/
-    obtenerCategoria({commit}, {id, onComplete, onError}){
-      axios.get(`http://localhost:3000/Categoria/${id}`)
-      .then( response => {
-        commit('SET_CATEGORIA', response.data.data)
-        onComplete(response)
-      })
-      .catch(onError)
-    },
-    obtenerPersonal({commit}, {id, onComplete, onError}){
+    obtenerPersonal({commit}, {id, onComplete, onError}) {
       axios.get(`http://localhost:3000/Personal/${id}`)
       .then( response => {
-        commit('SET_PERSONAL1', response.data.data)
+        commit('SET_PERSONA', response.data.data);
         onComplete(response)
       })
       .catch(onError)
     },
-    obtenerTickets({commit}, {id, onComplete, onError}){
-      axios.get(`http://localhost:3000/Tickets/${id}`)
-      .then( response => {
-        commit('SET_TICKETS1', response.data.data)
-        onComplete(response)
-      })
-      .catch(onError)
-    },
-
-    /*todos los ELIMINAR */
-    eliminarCategoria({commit}, {id, onComplete, onError}){
-      axios.delete(`http://localhost:3000/Categoria/${id}`)
+    editarPersonal({commit}, {id, params, onComplete, onError} ) {
+      axios.put(`http://localhost:3000/Personal/${id}`, params)
       .then(onComplete)
       .catch(onError)
     },
@@ -113,23 +103,39 @@ export default new Vuex.Store({
       .then(onComplete)
       .catch(onError)
     },
-    eliminarTickets({commit}, {id, onComplete, onError}){
-      axios.delete(`http://localhost:3000/Tickets/${id}`)
+    //TICKETS
+    setTicket({commit}){
+      commit("SET_LOADING", true);
+      axios.get('http://localhost:3000/Tickets')
+      .then( response => {
+        commit('SET_TICKETS', response.data);
+      })
+      .finally(() => commit('SET_LOADING', false))
+    },
+    crearTicket({commit}, {params, onComplete, onError}) {
+      axios.post('http://localhost:3000/Tickets', params)
       .then(onComplete)
       .catch(onError)
     },
-    
-    /*todos los EDITAR */
-    editarPersonal({commit}, {id, params, onComplete, onError} ) {
-      axios.put(`http://localhost:3000/Personal/${id}`, params)
-      .then(onComplete)
+    obtenerTicket({commit}, {id, onComplete, onError}) {
+      axios.get(`http://localhost:3000/Tickets/${id}`)
+      .then( response => {
+        commit('SET_TICKET', response.data.data);
+        onComplete(response)
+      })
       .catch(onError)
     },
-    editarTickets({commit}, {id, params, onComplete, onError} ) {
+    editarTicket({commit}, {id, params, onComplete, onError} ) {
       axios.put(`http://localhost:3000/Tickets/${id}`, params)
       .then(onComplete)
       .catch(onError)
     },
+    eliminarTicket({commit}, {id, onComplete, onError}){
+      axios.delete(`http://localhost:3000/Tickets/${id}`)
+      .then(onComplete)
+      .catch(onError)
+    },
+
   },
   modules: {
   }

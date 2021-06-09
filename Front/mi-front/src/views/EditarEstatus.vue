@@ -2,9 +2,9 @@
   <div>
     <h1>Editar Estatus</h1>
     <b-form @submit.prevent="guardarTicket()">
-      <div class="inputs">
+      <div>
         <Input
-          v-model="tickets.nombre"
+          v-model="ticket.Nombre"
           id="nombre"
           titulo="Nombre"
           placeholder="Ingrese el nombre"
@@ -13,7 +13,7 @@
           class="mt-2 col-10"
         />
         <Input
-          v-model="tickets.descripcion"
+          v-model="ticket.Descripcion"
           id="descripcion"
           titulo="Descripción"
           placeholder="Ingrese la descripción"
@@ -21,58 +21,62 @@
           :disabled= true
           class="mt-3 col-10"
         />
-        <Select
-          :items="PrioridadOpciones"
-          v-model="tickets.prioridad"
-          :vmodel="tickets.prioridad"
-          id="prioridad"
-          iditem="id"
-          name="nombrePrioridad"
-          titulo="Prioridad"
-          :error="erroresValidacion && !validacionPrioridad"
-          mensajeError="Es necesario ingresar la prioridad"
+        <h6>Prioridad</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.Prioridad"
+        >
+        <option
+        v-for="item in PrioridadOpciones"
+        :value="item.id"
+        :key="item.id"
+        :disabled= true
+        >
+        {{item.nombrePrioridad}}
+        </option>
+        </select>
+
+        <h6>Personal</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.idPersonal"
+        >
+        <option
+          v-for="pers in personal"
+          :value="pers.idPersonal"
+          :key="pers.idPersonal"
           :disabled= true
-          class="mt-3 col-10"
-        />
-        <Select
-          :items="personal"
-          v-model="tickets.idPersonal"
-          :vmodel="tickets.idPersonal"
-          id="personal"
-          iditem="idPersonal"
-          name="nombre"
-          lastname="apellidos"
-          titulo="Personal"
-          :error="erroresValidacion && !validacionPersonal"
-          mensajeError="Es necesario ingresar el personal"
+
+        >
+        {{pers.Nombre}}
+        </option>
+        </select>
+
+        <h6>Categorias</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.idCategorias"
+        >
+        <option
+          v-for="cat in categorias"
+          :value="cat.idCategorias"
+          :key="cat.idCategorias"
           :disabled= true
-          class="mt-3 col-10"
-        />
-        <Select
-          :items="categorias"
-          v-model="tickets.idCategorias"
-          :vmodel="tickets.idCategorias"
-          id="categorias"
-          iditem="idCategorias"
-          name="nombre"
-          titulo="Categorías"
-          :error="erroresValidacion && !validacionCategoria"
-          mensajeError="Es necesario ingresar la categoria"
-          :disabled= true
-          class="mt-3 col-10"
-        />
-        <Select
-          :items="EstatusOpciones"
-          v-model="tickets.estatus"
-          :vmodel="tickets.estatus"
-          id="estatus"
-          iditem="id"
-          name="nombreEstatus"
-          titulo="Estatus"
-          :error="erroresValidacion && !validacionEstatus"
-          mensajeError="Es necesario ingresar el estatus"
-          class="mt-3 col-10"
-        />
+
+        >
+        {{cat.Nombre}}
+        </option>
+        </select>
+
+        <h6>Estatus</h6>
+        <select class="mt-3 form-select"
+          v-model="ticket.Estatus"
+        >
+        <option
+        v-for="item in EstatusOpciones"
+        :value="item.id"
+        :key="item.id"
+        >
+        {{item.nombreEstatus}}
+        </option>
+        </select>
       </div>
       <b-button type="submit" variant="dark">Guardar</b-button>
     </b-form>
@@ -81,18 +85,16 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import Select from "../components/Select";
 import Input from "../components/Input";
 import Vue from 'vue'
 export default {
   name: "EditarTicket",
   components: {
-    Select,
     Input,
   },
   data() {
     return {
-      tickets: {
+      ticket: {
         nombre: "",
         descripcion: "",
         prioridad: "",
@@ -115,37 +117,37 @@ export default {
     };
   },
   computed: {
-    ...mapState(["personal", "categorias", "tickets"]),
+    ...mapState(["personal", "categorias", "ticket"]),
     validacionPrioridad() {
       return (
-        this.tickets.prioridad !== null
+        this.ticket.Prioridad !== null
       );
     },
     validacionPersonal() {
       return (
-        this.tickets.idPersonal !== null
+        this.ticket.idPersonal !== null
       );
     },
     validacionCategoria() {
       return (
-        this.tickets.idCategorias !== null
+        this.ticket.idCategorias !== null
       );
     },
     validarEstatus() {
       return (
-        this.tickets.idCategorias !== null
+        this.ticket.idCategorias !== null
       );
     },
   },
   methods: {
     ...mapActions([
       "setPersonal",
-      "setCategorias",
-      "obtenerTickets",
-      "editarTickets",
+      "setCategoria",
+      "obtenerTicket",
+      "editarTicket",
     ]),
     guardarTicket() {
-      console.log(this.tickets)
+      console.log(this.ticket)
       if (
         !(this.validacionPrioridad &&this.validacionPersonal &&
           this.validacionCategoria
@@ -154,16 +156,16 @@ export default {
         this.erroresValidacion = true;
       } else {
         this.erroresValidacion = false;
-        this.editarTickets({
+        this.editarTicket({
           id: this.$route.params.id,
-          params: this.tickets,
+          params: this.ticket,
           onComplete: (response) => {
             this.$notify({
               type: "success",
               title: response.data.mensaje,
             });
             this.$router.push({
-              name: "HomeTickets",
+              name: "HomeTicket",
             });
           },
           onError: (err) => {
@@ -177,11 +179,11 @@ export default {
     },
   },
   created() {
-    this.setPersonal(), this.setCategorias(),
-    this.obtenerTickets({
+    this.setPersonal(), this.setCategoria(),
+    this.obtenerTicket({
           id: this.$route.params.id,
           onComplete: res => 
-          Vue.set(this, 'tickets', res.data.data)
+          Vue.set(this, 'ticket', res.data.data)
       })
   },
 };

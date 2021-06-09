@@ -3,7 +3,7 @@
   <h1>categorias</h1>
   <b-button variant="primary" to="/agregarCategoria">Agregar categoria</b-button>
 
-  <Table :items="categorias" :fields="campos" >
+  <Table :items="categorias" :fields="campos" :busy="loading">
     <template slot="actions" slot-scope="{ item }">
         <b-button @click="onEliminar(item)">Eliminar</b-button>
     </template> 
@@ -16,7 +16,7 @@ import Table from '../components/Table'
 import {mapState, mapActions } from 'vuex'
 
 export default {
-  name: 'HomCategoria',
+  name: 'HomeCategoria',
   components: {
     Table
   },
@@ -33,12 +33,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(["categorias"])
+    ...mapState(["categorias","loading"])
     
   },
   
   methods: {
-    ...mapActions(["setCategorias","eliminarCategoria"]),
+    ...mapActions(["setCategoria","eliminarCategoria"]),
 
      onEliminar(item) {
       console.log("Eliminar", item.item.idCategorias);
@@ -63,7 +63,7 @@ export default {
                   type: "success",
                   title: response.data.mensaje,
                 });
-                setTimeout(() => this.setCategorias(), 1000);
+                setTimeout(() => this.setCategoria(), 1000);
               },
             });
           }
@@ -74,7 +74,7 @@ export default {
     },
   },
   created() {
-    this.setCategorias();
+    this.setCategoria();
   }
 }
 </script>

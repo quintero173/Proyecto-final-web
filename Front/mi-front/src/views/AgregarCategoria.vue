@@ -3,7 +3,7 @@
       <h1>Agregar categoria</h1>
       <b-form @submit.prevent="guardarCategoria()">
           <Input
-            v-model="categorias.nombre"
+            v-model="categoria.nombre"
             id="nombre"
             titulo="Nombre"
             placeholder="Ingrese el dato"
@@ -27,7 +27,7 @@ export default {
     },
     data() {
         return {
-            categorias: {
+            categoria: {
                 nombre: ""
             },
             erroresValidacion: false
@@ -36,8 +36,8 @@ export default {
     computed: {
         validacionNombre() {
             return (
-                 this.categorias.nombre !==undefined && 
-                 this.categorias.nombre.trim() !== ""
+                 this.categoria.nombre !==undefined && 
+                 this.categoria.nombre.trim() !== ""
             )
         }
     },
@@ -48,7 +48,7 @@ export default {
                 this.erroresValidacion = false
 
                 this.crearCategoria({
-                    params: this.categorias,
+                    params: this.categoria,
                     onComplete: (response) => {
                         console.log(response.data);
                         this.$notify({
@@ -63,7 +63,7 @@ export default {
                         console.log(error.response.data.mensaje);
                         this.$notify({
                             type: 'error',
-                            //  title: response.data.mensaje,
+                            title: error.response.data.mensaje,
                         });
                     }
                 });

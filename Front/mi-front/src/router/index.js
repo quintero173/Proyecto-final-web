@@ -1,18 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import HomeInicio from '../views/HomeInicio.vue'
-import HomeCategoria from '../views/HomeCategoria'
-import HomePersonal from '../views/HomePersonal'
-import HomeTickets from '../views/HomeTickets'
+import HomePersonal from '../views/HomePersonal.vue'
+import HomeCategoria from '../views/HomeCategoria.vue'
+import HomeTicket from '../views/HomeTicket.vue'
 
 
-import AgregarCategoria from '../views/AgregarCategoria'
+
 import AgregarPersonal from '../views/AgregarPersonal'
-import AgregarTickets from '../views/AgregarTickets'
+import AgregarCategoria from '../views/AgregarCategoria'
+import AgregarTicket from '../views/AgregarTicket'
+
 
 import EditarPersonal from '../views/EditarPersonal'
 import EditarTicket from '../views/EditarTicket'
-import EditarEstatus from "../views/EditarEstatus";
+import EditarEstatus from '../views/EditarEstatus'
+
+
 
 Vue.use(VueRouter)
 
@@ -23,24 +28,19 @@ const routes = [
     component: HomeInicio
   },
   {
-    path: '/homeCategoria',
-    name: 'HomeCategoria',
-    component: HomeCategoria
-  },
-  {
     path: '/homePersonal',
     name: 'HomePersonal',
     component: HomePersonal
   },
   {
-    path: '/homeTickets',
-    name: 'HomeTickets',
-    component: HomeTickets
+    path: '/homeTicket',
+    name: 'HomeTicket',
+    component: HomeTicket
   },
   {
-    path: '/agregarCategoria',
-    name: 'AgregarCategoria',
-    component: AgregarCategoria
+    path: '/homeCategoria',
+    name: 'HomeCategoria',
+    component: HomeCategoria
   },
   {
     path: '/agregarPersonal',
@@ -48,24 +48,29 @@ const routes = [
     component: AgregarPersonal
   },
   {
-    path: '/agregarTickets',
-    name: 'AgregarTickets',
-    component: AgregarTickets
+    path: '/agregarCategoria',
+    name: 'AgregarCategoria',
+    component: AgregarCategoria
   },
   {
-    path: '/editarPersonal/:idPersonal',
+    path: '/agregarTicket',
+    name: 'AgregarTicket',
+    component: AgregarTicket
+  },
+  {
+    path: '/editarPersonal/:id',
     name: 'EditarPersonal',
     component: EditarPersonal
   },
   {
-    path: '/editarTickets/:idTickets',
+    path: '/editarTicket/:id',
     name: 'EditarTicket',
     component: EditarTicket
   },
   {
-    path: "/editarestatus/:idTickets",
-    name: "EditarEstatus",
-    component: EditarEstatus,
+    path: '/editarEstatus/:id',
+    name: 'EditarEstatus',
+    component: EditarEstatus
   }
 ]
 
